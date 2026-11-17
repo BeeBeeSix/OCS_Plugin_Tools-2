@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Blatman are recorded here.
+All notable changes to Tools are recorded here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning: [Semantic Versioning](https://semver.org/) —
 `0.x.y` means an initial version, still being tested.
