@@ -1,0 +1,25 @@
+[package]
+name = "ocs-plugin-tools"
+version = "0.2.0"
+edition = "2021"
+description = "A collection of tools for Open CAD Studio."
+license = "GPL-3.0-only"
+
+[workspace]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+ocs_plugin_api = { git = "https://github.com/HakanSeven12/OpenCADStudio", rev = "8b4d27046040b27eb07d3faed7b7472bd7bdaea9", features = ["host"] }
+serde_json = "1"
+
+
+# Uncomment below if Steal opens a separate eframe GUI window:
+eframe = { version = "0.37", default-features = false, features = ["default_fonts", "glow", "x11", "wayland"] }
+winit = "0.30"
+rfd = "0.18.0"
+
+
+# [target.'cfg(windows)'.dependencies]
+# rfd = { version = "0.15", default-features = false }

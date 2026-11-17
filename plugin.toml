@@ -1,0 +1,15 @@
+[plugin]
+id = "com.beebeesix.ocs-plugin-tools"
+name = "Tools"
+version = "0.2.0"
+description = "A collection of tools for Open CAD Studio."
+author = "BeeBeeSix"
+license = "GPL-3.0-only"
+repository = "https://github.com/BeeBeeSix/OCS_Plugin_Tools"
+
+[opencad]
+# Must match your Open CAD Studio version (v2026.46 = API 23)
+api_version = 23
+ribbon_order = 120
+command_prefixes = ["STEAL"]
+xdata_apps = []
