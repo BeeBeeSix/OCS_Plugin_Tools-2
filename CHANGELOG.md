@@ -11,6 +11,10 @@ release notes are taken from). `scripts/release.ps1` moves the entries under
 
 ## [Unreleased]
 
+### Added
+- Shortcuts from the lisp: `01`-`09` view presets, `ZE` zoom extents, `UV` restore the UCS saved by DVT, `UW` UCS World + view twist 0.
+- **DVT** (twisted view), ported from DVT.LSP: draws the pick line on `defpoints`, sets UCS World then a UCS along the line, turns the view to plan, resets snap angle and current layer, and saves the UCS as `CURRENT_VIEW`.
+
 ### Changed
 - Plugin renamed from Steal to **Tools** (`OCS_Plugin_Tools`): Steal is now one tool inside it. Plugin id is now `com.beebeesix.ocs-plugin-tools`, so remove the old `com.beebeesix.ocs-plugin-steal` plugin folder before installing.
 - The log file is now `%TEMP%\ocs-tools.log`.

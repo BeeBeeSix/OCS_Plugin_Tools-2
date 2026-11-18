@@ -7,8 +7,10 @@
 //! plugin process, next to the CAD window, and writes into the drawing through the host's
 //! validated table operations, as one undo step.
 
+mod dvt;
 mod model;
 mod ui;
+mod views;
 
 use std::sync::{Arc, Mutex, OnceLock};
 
@@ -27,7 +29,7 @@ static MANIFEST: PluginManifest = PluginManifest {
     api_version: ApiVersion::CURRENT,
     ribbon_order: 120,
     xdata_apps: &[],
-    command_prefixes: &["STEAL"],
+    command_prefixes: &["STEAL", "DVT", "01", "02", "03", "04", "05", "06", "07", "08", "09", "ZE", "UV", "UW"],
 };
 
 /// Step-by-step log in the temp folder (%TEMP%\ocs-tools.log) so a silent failure can be diagnosed.
@@ -135,6 +137,30 @@ impl BuiltinPlugin for ToolsPlugin {
     }
 
     fn dispatch(&self, host: &mut dyn HostApi, cmd: &str) -> bool {
+        if let Some(line) = views::host_command(cmd) {
+            // One call per line. A command left running (UCS waits at its prompt) would take the
+            // next line as answers to its prompts, so ESC clears it between lines.
+            let mut first = true;
+            for l in line.lines() {
+                if !first {
+                    host.execute_command("ESC");
+                }
+                first = false;
+                if !host.execute_command(l) {
+                    host.push_error(&format!("{cmd}: host did not run \"{l}\""));
+                    break;
+                }
+            }
+            if line.contains('\n') {
+                // The last line may leave its command at a prompt (DVIEW waits for an option).
+                host.execute_command("ESC");
+            }
+            return true;
+        }
+        if cmd.eq_ignore_ascii_case("DVT") {
+            dvt::start(host);
+            return true;
+        }
         if !cmd.eq_ignore_ascii_case("STEAL") {
             return false;
         }
@@ -168,15 +194,26 @@ impl CadModule for ToolsModule {
     fn ribbon_groups(&self) -> &[RibbonGroup] {
         static GROUPS: OnceLock<Vec<RibbonGroup>> = OnceLock::new();
         GROUPS.get_or_init(|| {
-            vec![RibbonGroup {
-                title: "Import",
-                tools: vec![RibbonItem::LargeTool(ToolDef {
-                    id: "STEAL",
-                    label: "Steal",
-                    icon: IconKind::Glyph("S"),
-                    event: ModuleEvent::Command("STEAL".to_string()),
-                })],
-            }]
+            vec![
+                RibbonGroup {
+                    title: "Import",
+                    tools: vec![RibbonItem::LargeTool(ToolDef {
+                        id: "STEAL",
+                        label: "Steal",
+                        icon: IconKind::Glyph("S"),
+                        event: ModuleEvent::Command("STEAL".to_string()),
+                    })],
+                },
+                RibbonGroup {
+                    title: "View",
+                    tools: vec![RibbonItem::LargeTool(ToolDef {
+                        id: "DVT",
+                        label: "DVT",
+                        icon: IconKind::Glyph("D"),
+                        event: ModuleEvent::Command("DVT".to_string()),
+                    })],
+                },
+            ]
         })
     }
 }

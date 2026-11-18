@@ -1,6 +1,6 @@
 [package]
 name = "ocs-plugin-tools"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 description = "A collection of tools for Open CAD Studio."
 license = "GPL-3.0-only"

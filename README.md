@@ -5,6 +5,11 @@ A collection of tools for Open CAD Studio.
 | Command | Tool |
 |---|---|
 | `STEAL` | Import layers, linetypes, text styles, dimension styles and blocks from another drawing |
+| `01`-`09` | View presets: 01 SW iso, 02 front, 03 SE iso, 04 left, 05 top, 06 right, 07 NW iso, 08 back, 09 NE iso |
+| `ZE` | Zoom extents |
+| `UW` | UCS World, then view twist 0 (`DVIEW TWIST 0`) |
+| `UV` | Restore the UCS saved by DVT (`CURRENT_VIEW`) |
+| `DVT` | Twisted view: pick two points for the desired horizontal; UCS and plan view turn to that line |
 
 ## Steal
 
